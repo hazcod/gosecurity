@@ -1,4 +1,4 @@
-package hash
+package go_hash
 
 import (
 	"crypto/hmac"
@@ -11,31 +11,28 @@ import (
 )
 
 const (
-	DefaultAlgo = "argon2"
+	DefaultAlgo  = "argon2"
 	MinHashParts = 5
-	SaltSize = 10
+	SaltSize     = 10
 
-	Separator = "$"
+	Separator          = "$"
 	ParameterSeparator = ":"
 )
 
 var (
-	HashImplementations = make(map[string]HashImplementation)
+	Implementations = make(map[string]Hash)
 
-	errUnknownHashImpl = errors.New("unknown hash implementation")
-	errBadHashFormat    = errors.New("invalid hash format")
+	errUnknownHashImpl = errors.New("unknown go-hash implementation")
+	errBadHashFormat   = errors.New("invalid go-hash format")
 )
 
-type HashImplementation interface {
-	GetID() (string)
+type Hash interface {
+	GetID() string
 	Hash(password, salt []byte) (encodedParams string, key []byte, err error)
-	Configure(string, string, uint32) (HashImplementation, error)
-	GetDefaultLength() (int)
-	GetNumParameters() (int)
-	String() (string)
-	GetDefaultHashSize() (int)
+	Configure(string, string, uint32) (Hash, error)
+	String() string
+	GetDefaultHashSize() int
 }
-
 
 func GenerateRandomBytes(length int) []byte {
 	b := make([]byte, length)
@@ -59,10 +56,10 @@ func hmacKey(params string, key []byte) ([]byte, error) {
 	return sum, nil
 }
 
-func Hash(input []byte) (string, error) {
+func GetHash(input []byte) (string, error) {
 
 	var hashImpl = DefaultAlgo
-	var hasher = HashImplementations[hashImpl]
+	var hasher = Implementations[hashImpl]
 
 	var salt = GenerateRandomBytes(SaltSize)
 
@@ -87,15 +84,15 @@ func Hash(input []byte) (string, error) {
 	return prefix + encodedHash, nil
 }
 
-func parseHash(hash string) (HashImplementation, string, []byte, int, string, error) {
+func parseHash(hash string) (Hash, string, []byte, int, string, error) {
 	parts := strings.Split(hash, Separator)
 
 	if len(parts) < MinHashParts {
 		return nil, "", nil, 0, "", errBadHashFormat
 	}
 
-	hashImpl, found := HashImplementations[parts[1]]
-	if ! found {
+	hashImpl, found := Implementations[parts[1]]
+	if !found {
 		return nil, "", nil, 0, "", errUnknownHashImpl
 	}
 
