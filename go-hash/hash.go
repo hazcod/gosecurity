@@ -93,7 +93,7 @@ func parseHash(hash string) (Hash, string, []byte, uint32, string, error) {
 	}
 
 	hashImpl, found := Implementations[parts[1]]
-	if ! found {
+	if !found {
 		return nil, "", nil, 0, "", errUnknownHashImpl
 	}
 

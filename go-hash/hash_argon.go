@@ -23,9 +23,9 @@ var (
 	argonThreads = uint8(runtime.NumCPU() / 2) // max threads = num of cores
 	argonModi    = []string{"i", "id"}         // argon modus
 
-	errBadParameters = errors.New("malformed go-hash parameters")
+	errBadParameters  = errors.New("malformed go-hash parameters")
 	errUnknownHashMod = errors.New("unknown go-hash modus")
-	errBadHashSize   = errors.New("bad go-hash size")
+	errBadHashSize    = errors.New("bad go-hash size")
 )
 
 type Argon2 struct {
@@ -102,7 +102,7 @@ func (uc *Argon2) Configure(parameters string, separator string, hashSize uint32
 func (uc *Argon2) configureArgon(mode string, hashSize uint32, passes uint32, memory uint32) (Hash, error) {
 	nc := *uc
 
-	if ! inStrArray(mode, argonModi) || hashSize <= 0 || passes <= 0 || memory <= 0 {
+	if !inStrArray(mode, argonModi) || hashSize <= 0 || passes <= 0 || memory <= 0 {
 		return nil, errBadParameters
 	}
 
