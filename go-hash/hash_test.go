@@ -25,12 +25,12 @@ func TestHmacKey(t *testing.T) {
 
 	hmac1, err := hmacKey(input, key)
 	if hmac1 == nil || err != nil {
-		t.Errorf("Hmac is nil or error occured: %s", err.Error())
+		t.Errorf("Hmac is nil or error occurred: %s", err.Error())
 	}
 
 	hmac2, err := hmacKey(input, key)
 	if hmac2 == nil || err != nil {
-		t.Errorf("Hmac2 is nil or error occured: %s", err.Error())
+		t.Errorf("Hmac2 is nil or error occurred: %s", err.Error())
 	}
 
 	if bytes.Compare(hmac1, hmac2) != 0 {
@@ -39,7 +39,7 @@ func TestHmacKey(t *testing.T) {
 
 	hmac3, err := hmacKey(input, GenerateRandomBytes(10))
 	if bytes.Compare(hmac1, hmac3) == 0 || err != nil {
-		t.Errorf("hmacs look alike or error occured: %s", err.Error())
+		t.Errorf("hmacs look alike or error occurred: %s", err.Error())
 	}
 }
 

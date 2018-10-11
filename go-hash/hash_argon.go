@@ -24,7 +24,7 @@ var (
 	argonModi    = []string{"i", "id"}         // argon modus
 
 	errBadParameters = errors.New("malformed go-hash parameters")
-	errUnkownHashMod = errors.New("unkown go-hash modus")
+	errUnknownHashMod = errors.New("unknown go-hash modus")
 	errBadHashSize   = errors.New("bad go-hash size")
 )
 
@@ -58,7 +58,7 @@ func (uc *Argon2) Hash(password, salt []byte) (string, []byte, error) {
 	case "id":
 		h = argon2.IDKey(password, salt, uc.MemoryPasses, uc.MemorySize, argonThreads, uc.HashSize)
 	default:
-		err = errUnkownHashMod
+		err = errUnknownHashMod
 	}
 
 	if err != nil {
