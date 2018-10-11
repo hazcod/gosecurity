@@ -1,4 +1,4 @@
-package go_hash
+package gohash
 
 import (
 	"bytes"
@@ -65,11 +65,11 @@ func TestGetHash(t *testing.T) {
 		t.Errorf("Salts are not unique: %s", hash3)
 	}
 
-	if !strings.Contains(hash1, DefaultAlgo) {
+	if !strings.Contains(hash1, "argon2") {
 		t.Errorf("Hash is not using default algo: %s", hash1)
 	}
 
-	if !strings.Contains(hash1, Separator) {
+	if !strings.Contains(hash1, "$") {
 		t.Error("Hash does not use value separator")
 	}
 }

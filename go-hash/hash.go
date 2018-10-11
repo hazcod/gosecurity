@@ -1,4 +1,4 @@
-package go_hash
+package gohash
 
 import (
 	"crypto/hmac"
@@ -11,30 +11,33 @@ import (
 )
 
 const (
-	DefaultAlgo  = "argon2"
-	MinHashParts = 5
-	SaltSize     = 10
+	defaultAlgo  = "argon2"
+	minHashParts = 5
+	saltSize     = 10
 
-	Separator          = "$"
-	ParameterSeparator = ":"
+	separator          = "$"
+	parameterSeparator = ":"
 )
 
 var (
-	Implementations = make(map[string]Hash)
+	implementations = make(map[string]hash)
 
 	errUnknownHashImpl = errors.New("unknown go-hash implementation")
 	errBadHashFormat   = errors.New("invalid go-hash format")
 )
 
-type Hash interface {
+type hash interface {
 	Hash(password, salt []byte) (encodedParams string, key []byte, err error)
-	Configure(string, string, uint32) (Hash, error)
+	Configure(string, string, uint32) (hash, error)
 	GetID() string
 	GetMode() string
 	GetDefaultHashSize() uint32
 	String() string
 }
 
+/*
+GenerateRandomBytes Generate n number of random bytes
+*/
 func GenerateRandomBytes(length int) []byte {
 	b := make([]byte, length)
 
@@ -57,12 +60,15 @@ func hmacKey(input string, key []byte) ([]byte, error) {
 	return sum, nil
 }
 
+/*
+GetHash Generate a hash based on the input and return it hexadecimal
+*/
 func GetHash(input []byte) (string, error) {
 
-	var hashImpl = DefaultAlgo
-	var hasher = Implementations[hashImpl]
+	var hashImpl = defaultAlgo
+	var hasher = implementations[hashImpl]
 
-	var salt = GenerateRandomBytes(SaltSize)
+	var salt = GenerateRandomBytes(saltSize)
 
 	params, hash, err := hasher.Hash(input, salt[:])
 	if err != nil {
@@ -85,14 +91,14 @@ func GetHash(input []byte) (string, error) {
 	return prefix + encodedHash, nil
 }
 
-func parseHash(hash string) (Hash, string, []byte, uint32, string, error) {
-	parts := strings.Split(hash, Separator)
+func parseHash(hash string) (hash, string, []byte, uint32, string, error) {
+	parts := strings.Split(hash, separator)
 
-	if len(parts) < MinHashParts {
+	if len(parts) < minHashParts {
 		return nil, "", nil, 0, "", errBadHashFormat
 	}
 
-	hashImpl, found := Implementations[parts[1]]
+	hashImpl, found := implementations[parts[1]]
 	if !found {
 		return nil, "", nil, 0, "", errUnknownHashImpl
 	}
@@ -107,7 +113,7 @@ func parseHash(hash string) (Hash, string, []byte, uint32, string, error) {
 	salt = salt[1:]
 	key := parts[4]
 
-	hashImpl, err = hashImpl.Configure(params, ParameterSeparator, hashImpl.GetDefaultHashSize())
+	hashImpl, err = hashImpl.Configure(params, parameterSeparator, hashImpl.GetDefaultHashSize())
 	if err != nil {
 		return nil, "", nil, 0, "", err
 	}
@@ -115,13 +121,16 @@ func parseHash(hash string) (Hash, string, []byte, uint32, string, error) {
 	return hashImpl, params, salt, hashSize, key, nil
 }
 
+/*
+VerifyHash Check whether the given value matches the given hash
+*/
 func VerifyHash(hash string, input []byte) (bool, error) {
 	hashImpl, paramStr, salt, hashSize, key, err := parseHash(hash)
 	if err != nil {
 		return false, err
 	}
 
-	hashImpl, err = hashImpl.Configure(paramStr, ParameterSeparator, uint32(hashSize))
+	hashImpl, err = hashImpl.Configure(paramStr, parameterSeparator, uint32(hashSize))
 	if err != nil {
 		return false, err
 	}
@@ -144,6 +153,9 @@ func VerifyHash(hash string, input []byte) (bool, error) {
 	return hmac.Equal(baseMac, hashed), nil
 }
 
+/*
+NeedsRehash Check whether the given hash needs a newer algorithm, parameters or bigger size
+*/
 func NeedsRehash(hash string) (bool, error) {
 
 	hashImpl, _, salt, hashSize, _, err := parseHash(hash)
@@ -151,7 +163,7 @@ func NeedsRehash(hash string) (bool, error) {
 		return false, err
 	}
 
-	var defaultImpl = Implementations[DefaultAlgo]
+	var defaultImpl = implementations[defaultAlgo]
 
-	return hashImpl.GetID() != defaultImpl.GetID() || hashImpl.GetMode() != defaultImpl.GetMode() || len(salt) < SaltSize || hashSize < hashImpl.GetDefaultHashSize(), nil
+	return hashImpl.GetID() != defaultImpl.GetID() || hashImpl.GetMode() != defaultImpl.GetMode() || len(salt) < saltSize || hashSize < hashImpl.GetDefaultHashSize(), nil
 }
