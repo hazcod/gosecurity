@@ -47,12 +47,12 @@ func TestGetHash(t *testing.T) {
 	str1 := "This is some text message"
 	str2 := "This is another text message"
 
-	hash1, err := GetHash([]byte(str1))
+	hash1, err := GetHash(str1)
 	if err != nil {
 		t.Error(err.Error())
 	}
 
-	hash2, err := GetHash([]byte(str2))
+	hash2, err := GetHash(str2)
 	if err != nil {
 		t.Error(err.Error())
 	}
@@ -61,7 +61,7 @@ func TestGetHash(t *testing.T) {
 		t.Error("Hashes are not unique")
 	}
 
-	if hash3, _ := GetHash([]byte(str1)); hash3 == hash1 {
+	if hash3, _ := GetHash(str1); hash3 == hash1 {
 		t.Errorf("Salts are not unique: %s", hash3)
 	}
 
@@ -111,28 +111,28 @@ func TestVerifyHash(t *testing.T) {
 	str1 := "This is some random string +-"
 	str2 := "This is another string"
 
-	hash1, _ := GetHash([]byte(str1))
-	hash2, _ := GetHash([]byte(str2))
+	hash1, _ := GetHash(str1)
+	hash2, _ := GetHash(str2)
 
-	if valid, err := VerifyHash(hash1, []byte(str1)); valid == false || err != nil {
+	if valid, err := VerifyHash(hash1, str1); valid == false || err != nil {
 		t.Error("verify hash is incorrect (hash1!=str1)")
 	}
 
-	if valid, err := VerifyHash(hash1, []byte(str2)); valid == true || err != nil {
+	if valid, err := VerifyHash(hash1, str2); valid == true || err != nil {
 		t.Error("verify hash is incorrect (hash1=str2)")
 	}
 
-	if valid, err := VerifyHash(hash2, []byte(str1)); valid == true || err != nil {
+	if valid, err := VerifyHash(hash2, str1); valid == true || err != nil {
 		t.Error("verify hash is incorrect (hash2=str1)")
 	}
 
-	if valid, err := VerifyHash(hash2, []byte(str2)); valid == false || err != nil {
+	if valid, err := VerifyHash(hash2, str2); valid == false || err != nil {
 		t.Error("verify hash is incorrect (hash2!=str2)")
 	}
 }
 
 func TestNeedsRehash(t *testing.T) {
-	hash1, _ := GetHash([]byte("Some string"))
+	hash1, _ := GetHash("Some string")
 	if rehash, err := NeedsRehash(hash1); rehash == true || err != nil {
 		t.Errorf("incorrect needsrehash (false), %s", err)
 	}

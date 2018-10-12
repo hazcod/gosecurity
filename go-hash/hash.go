@@ -27,8 +27,8 @@ var (
 )
 
 type hash interface {
-	Hash(password, salt []byte) (encodedParams string, key []byte, err error)
-	Configure(string, string, uint32) (hash, error)
+	Hash(password string, salt []byte) (encodedParams string, key []byte, err error)
+	Configure(parameters string, separator string, hashSize uint32) (hash, error)
 	GetID() string
 	GetMode() string
 	GetDefaultHashSize() uint32
@@ -63,7 +63,7 @@ func hmacKey(input string, key []byte) ([]byte, error) {
 /*
 GetHash Generate a hash based on the input and return it hexadecimal
 */
-func GetHash(input []byte) (string, error) {
+func GetHash(input string) (string, error) {
 
 	var hashImpl = defaultAlgo
 	var hasher = implementations[hashImpl]
@@ -124,7 +124,7 @@ func parseHash(hash string) (hash, string, []byte, uint32, string, error) {
 /*
 VerifyHash Check whether the given value matches the given hash
 */
-func VerifyHash(hash string, input []byte) (bool, error) {
+func VerifyHash(hash string, input string) (bool, error) {
 	hashImpl, paramStr, salt, hashSize, key, err := parseHash(hash)
 	if err != nil {
 		return false, err

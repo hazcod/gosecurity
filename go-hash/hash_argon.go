@@ -48,15 +48,15 @@ func (uc *argon2) encodedString() string {
 	return fmt.Sprintf("%s:%d:%d", uc.Mode, uc.MemoryPasses, uc.MemorySize)
 }
 
-func (uc *argon2) Hash(password, salt []byte) (string, []byte, error) {
+func (uc *argon2) Hash(password string, salt []byte) (string, []byte, error) {
 	var h []byte
 	var err error
 
 	switch uc.Mode {
 	case "i":
-		h = goargon2.Key(password, salt, uc.MemoryPasses, uc.MemorySize, argonThreads, uc.HashSize)
+		h = goargon2.Key([]byte(password), salt, uc.MemoryPasses, uc.MemorySize, argonThreads, uc.HashSize)
 	case "id":
-		h = goargon2.IDKey(password, salt, uc.MemoryPasses, uc.MemorySize, argonThreads, uc.HashSize)
+		h = goargon2.IDKey([]byte(password), salt, uc.MemoryPasses, uc.MemorySize, argonThreads, uc.HashSize)
 	default:
 		err = errUnknownHashMod
 	}
