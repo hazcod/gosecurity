@@ -1,15 +1,33 @@
-# go-hash [![Go Report Card](https://goreportcard.com/badge/github.com/hazcod/go-hash)](https://goreportcard.com/report/hazcod/go-hash) [![License](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/HazCod/g-hash/blob/master/LICENSE)
+# gosecurity [![Go Report Card](https://goreportcard.com/badge/github.com/hazcod/gosecurity)](https://goreportcard.com/report/hazcod/gosecurity) [![License](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/HazCod/gosecurity/blob/master/LICENSE)
+Library that contains security-related stuff.
+
+### gocrypto
+Encrypt and decrypt stuff using authenticated state-of-the-art crypto.
+
+#### usage
+```
+func GenerateKey() ([]byte, error)
+func Encrypt(input []byte, key []byte) ([]byte, error)
+func Decrypt(input []byte, key []byte) ([]byte, error)
+```
+
+#### format
+```
+<nonce(24b)><ciphertext>
+```
+
+### gohash
 Formats your password hashes in a standard (multihash-like) format so it keeps on working whenever you change algo.
 Defaults to Argon2id.
 
+#### usage
 ```
 func GetHash(input string) (string, error)
 func VerifyHash(hash string, input string) (bool, error)
 func NeedsRehash(hash string) (bool, error)
 ```
 
-## Format
-An example hash output would look like this:
+#### format
 ```
 $argon2$i:4:65536$IO+amcBFUXUETmI=$GpiSk2q1+y2DyfRVsg13BmIGE/oM0GLcM0SOs0s/H/s=
 
