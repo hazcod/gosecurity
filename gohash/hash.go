@@ -22,8 +22,8 @@ const (
 var (
 	implementations = make(map[string]hash)
 
-	errUnknownHashImpl = errors.New("unknown go-hash implementation")
-	errBadHashFormat   = errors.New("invalid go-hash format")
+	errUnknownHashImpl = errors.New("unknown gohash implementation")
+	errBadHashFormat   = errors.New("invalid gohash format")
 )
 
 type hash interface {

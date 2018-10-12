@@ -23,16 +23,16 @@ var (
 	argonThreads = uint8(runtime.NumCPU() / 2) // max threads = num of cores
 	argonModi    = []string{"i", "id"}         // argon modus
 
-	errBadParameters  = errors.New("malformed go-hash parameters")
-	errUnknownHashMod = errors.New("unknown go-hash modus")
-	errBadHashSize    = errors.New("bad go-hash size")
+	errBadParameters  = errors.New("malformed gohash parameters")
+	errUnknownHashMod = errors.New("unknown gohash modus")
+	errBadHashSize    = errors.New("bad gohash size")
 )
 
 type argon2 struct {
 	MemoryPasses uint32 // time setting
 	MemorySize   uint32 // memory setting in KiB, e.g. 64*1024 -> 64MB
 	Mode         string // modus for argon, i or id
-	HashSize     uint32 // go-hash size in bytes (min. 16)
+	HashSize     uint32 // gohash size in bytes (min. 16)
 }
 
 func init() {
