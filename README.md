@@ -1,8 +1,8 @@
 # gosecurity [![Go Report Card](https://goreportcard.com/badge/github.com/hazcod/gosecurity)](https://goreportcard.com/report/hazcod/gosecurity) [![License](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/HazCod/gosecurity/blob/master/LICENSE)
-Library that contains security-related stuff.
+Wrapper library that contains security-related stuff.
 
 ### gocrypto
-Encrypt and decrypt stuff using authenticated state-of-the-art crypto.
+Encrypt and decrypt stuff using authenticated state-of-the-art crypto, provided by golang.org/x/crypto/nacl/secretbox.
 
 #### usage
 ```
@@ -18,7 +18,7 @@ func Decrypt(input []byte, key []byte) ([]byte, error)
 
 ### gohash
 Formats your password hashes in a standard (multihash-like) format so it keeps on working whenever you change algo.
-Defaults to Argon2id.
+Defaults to Argon2id from golang.org/x/crypto/argon2.
 
 #### usage
 ```
