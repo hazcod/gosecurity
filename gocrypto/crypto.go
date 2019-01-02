@@ -1,9 +1,9 @@
 package gocrypto
 
 import (
-	"github.com/pkg/errors"
+	"errors"
+	"github.com/hazcod/gosecurity/gohash"
 	"golang.org/x/crypto/nacl/secretbox"
-	"gosecurity/gohash"
 )
 
 const (
@@ -12,10 +12,10 @@ const (
 )
 
 var (
-	errGenKey   = errors.New("Could not generate enough random bytes for key")
-	errGenNonce = errors.New("Could not generate enough random bytes for nonce")
-	errKeyNonce = errors.New("Incorrect key or nonce size")
-	errDecrypt  = errors.New("Decryption failed")
+	errGenKey   = errors.New("could not generate enough random bytes for key")
+	errGenNonce = errors.New("could not generate enough random bytes for nonce")
+	errKeyNonce = errors.New("incorrect key or nonce size")
+	errDecrypt  = errors.New("decryption failed")
 )
 
 /*
