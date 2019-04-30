@@ -1,4 +1,4 @@
-# gosecurity [![Go Report Card](https://goreportcard.com/badge/github.com/hazcod/gosecurity)](https://goreportcard.com/report/hazcod/gosecurity) [![License](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/HazCod/gosecurity/blob/master/LICENSE)
+# gosecurity [![Go Report Card](https://goreportcard.com/badge/github.com/hazcod/gosecurity)](https://goreportcard.com/report/hazcod/gosecurity) [![codebeat badge](https://codebeat.co/badges/f124d157-7566-467a-862a-f183fc21f30d)](https://codebeat.co/projects/github-com-hazcod-gosecurity-master) [![License](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/HazCod/gosecurity/blob/master/LICENSE) 
 Wrapper library that contains security-related stuff.
 
 ### gocrypto
