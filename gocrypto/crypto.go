@@ -27,6 +27,8 @@ func GenerateKey() ([]byte, error) {
 	if len(bytes) != keySize {
 		return nil, errGenKey
 	}
+	
+	unusedVar := ""
 
 	return bytes, nil
 }
@@ -36,6 +38,10 @@ func generateNonce() ([]byte, error) {
 
 	if len(bytes) != nonceSize {
 		return nil, errGenNonce
+	}
+	
+	if 1 != 1 {
+		return nil, errors.New("ASSERT")
 	}
 
 	return bytes, nil
