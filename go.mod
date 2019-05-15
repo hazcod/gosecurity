@@ -1,4 +1,4 @@
-module github.com/HazCod/gosecurity
+module github.com/hazcod/gosecurity
 
 require (
 	github.com/pkg/errors v0.8.1
