@@ -1,0 +1,18 @@
+on: pull_request
+name: PR Checks
+jobs:
+  golanglint:
+    name: golang lint
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - uses: reviewdog/action-golangci-lint@v1
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+  gobuild:
+    name: go build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - uses: actions/setup-go@v1
+    - run: go build -o /dev/null ./...
