@@ -1,10 +1,9 @@
-
-name: build
+name: test
 on: pull_request
 
 jobs:
-  build:
-    name: Build
+  test:
+    name: Tests
     runs-on: ubuntu-latest
     steps:
       - 
