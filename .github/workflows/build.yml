@@ -23,4 +23,4 @@ jobs:
         run: go mod download
       - 
         name: Go build
-        run: make build
+        run: go build -o /dev/null ./...
