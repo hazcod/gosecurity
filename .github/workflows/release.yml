@@ -1,0 +1,30 @@
+name: release
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  goreleaser:
+    runs-on: ubuntu-latest
+    steps:
+      - 
+        uses: actions/checkout@v2
+      - 
+        id: vars
+        run: |
+          echo ::set-output name=go_version::$(grep '^FROM go' .github/go/Dockerfile | cut -d ' ' -f 2 | cut -d ':' -f 2)
+          echo "Using Go version ${{ steps.vars.outputs.go_version }}"
+      - 
+        name: Setup go
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ steps.vars.outputs.go_version }}
+      -
+        name: Release
+        uses: goreleaser/goreleaser-action@v2
+        with:
+          version: latest
+          args: release --config=.github/goreleaser.yml --rm-dist
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
