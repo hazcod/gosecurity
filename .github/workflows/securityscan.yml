@@ -1,4 +1,4 @@
-name: "Code scanning - action"
+name: "security"
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
     - cron: '0 5 * * 6'
 
 jobs:
-  CodeQL-Build:
+  codescan:
 
     runs-on: ubuntu-latest
 
